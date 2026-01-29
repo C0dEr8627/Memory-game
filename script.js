@@ -26,6 +26,36 @@ let firstCard = null;
 let secondCard = null;
 let lockBoard = false;
 
+
+const levelModal = document.getElementById("levelModal");
+const modalMessage = document.getElementById("modalMessage");
+const nextLevelBtn = document.getElementById("nextLevelBtn");
+
+function showLevelModal(message) {
+  modalMessage.textContent = message;
+  levelModal.style.display = "flex";
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 }
+  });
+}
+
+function hideLevelModal() {
+  levelModal.style.display = "none";
+}
+
+// When user clicks Next Level
+nextLevelBtn.addEventListener("click", () => {
+  hideLevelModal();
+  currentLevel++;
+  if (currentLevel >= levels.length) {
+    alert("🏆 You completed all levels! Restarting...");
+    currentLevel = 0;
+  }
+  startNewGame();
+});
+
 // Shuffle
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
@@ -96,8 +126,7 @@ function checkMatch() {
     // Level complete
     if (matchedPairs === totalPairs) {
       setTimeout(() => {
-        alert(`🎉 Level ${currentLevel + 1} complete!`);
-
+        showLevelModal(`🎉 You completed Level ${currentLevel + 1}!`);
         currentLevel++;
         if (currentLevel >= levels.length) {
           alert("🏆 You completed all levels! Restarting...");

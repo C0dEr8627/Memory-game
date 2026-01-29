@@ -30,7 +30,15 @@
     <!-- Game Board -->
     <div class="row g-3" id="gameBoard"></div>
   </div>
+  <div id="levelModal" class="modal-overlay">
+    <div class="modal-content">
+      <h2>🎉 Level Complete!</h2>
+      <p id="modalMessage"></p>
+      <button id="nextLevelBtn" class="btn btn-success mt-3">Next Level</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
 </html>
