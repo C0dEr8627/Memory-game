@@ -179,7 +179,11 @@ h1 {
 }
 
 .modal-content {
+  display: flex;
   background: #f8fafc;
   padding: 32px 26px;
   border-radius: 14px;
+  max-width: 350px;
+  margin: auto;
+  text-align: center;
 }
