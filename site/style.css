@@ -1,234 +1,379 @@
-/* =========================
-   Flipzy – Responsive & Gamified UI
-   ========================= */
-
-/* RESET */
+/* ===============================
+   RESET STYLES
+   =============================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root {
-  --bg-main: linear-gradient(135deg, #1f1c2c, #928dab);
-  --bg-card: #ffffff;
-  --primary: #6c5ce7;
-  --secondary: #00cec9;
-  --accent: #fdcb6e;
-  --danger: #ff7675;
-  --success: #00b894;
-  --text-dark: #2d3436;
-  --text-light: #ffffff;
-  --shadow-soft: 0 8px 25px rgba(0, 0, 0, 0.15);
-  --radius: 14px;
-  --transition-fast: 0.25s ease;
-  --transition-normal: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* BODY */
+/* ===============================
+   BODY STYLES
+   =============================== */
 body {
+  font-family: 'Inter', sans-serif;
+  background-color: #1e40af; /* Deep royal blue */
+  background-image: 
+    linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.05) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.05) 75%);
+  background-size: 40px 40px;
+  color: #f1f5f9; /* Light text for contrast */
   min-height: 100vh;
-  background: var(--bg-main);
-  font-family: "Poppins", system-ui, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  color: var(--text-dark);
-}
-
-/* MAIN CONTAINER */
-.container {
-  background: rgba(255, 255, 255, 0.95);
-  width: 100%;
-  max-width: 480px;
-  border-radius: var(--radius);
-  padding: 1.25rem 1rem 1.5rem;
-  box-shadow: var(--shadow-soft);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-/* LOGO */
-.logo-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.logo-wrapper img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  border-radius: 10px;
-}
-
-.logo-wrapper h1 {
-  font-size: 1.7rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--primary);
-}
-
-/* PROGRESS BAR */
-.progress-wrapper {
-  width: 100%;
-}
-
-.custom-progress {
-  height: 10px;
-  border-radius: 10px;
-  background: #eaeaea;
+  position: relative;
   overflow: hidden;
 }
 
-.custom-progress-bar {
+/* ===============================
+   LOADING SCREEN
+   =============================== */
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
   height: 100%;
-  width: 0;
-  background: linear-gradient(
-    90deg,
-    var(--secondary),
-    var(--primary)
-  );
-  border-radius: 10px;
-  transition: width var(--transition-normal);
 }
 
-/* BOARD WRAPPER */
-.board-wrapper {
+/* LOGO + TEXT */
+.logo-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  animation: floatBounce 3s ease-in-out infinite;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 1rem;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #facc15;
+  text-shadow: 0 6px 20px rgba(0,0,0,0.45);
+}
+
+p {
+  font-size: 1.5rem;
+  color: #e0f2fe;
+}
+
+/* SPINNER */
+.spinner {
+  margin-top: 30px;
+  width: 64px;
+  height: 64px;
+  border: 6px solid rgba(250, 204, 21, 0.25);
+  border-top-color: #facc15;
+  border-radius: 50%;
+  animation: spinPulse 1.2s linear infinite;
+}
+
+/* ===============================
+   ANIMATIONS
+   =============================== */
+@keyframes spinPulse {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.12); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.5)); }
+  50% { transform: translateY(-12px); filter: drop-shadow(0 0 30px rgba(250, 204, 21, 0.8)); }
+}
+
+/* ===============================
+   SCREEN BASE
+   =============================== */
+.screen {
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===============================
+   LEVEL SELECTION SCREEN
+   =============================== */
+.level-screen {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+/* Floating pixel background animation */
+.level-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+  animation: pixelDrift 20s linear infinite;
+  z-index: 0;
+}
+
+/* Keep content above background */
+.level-screen > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* HEADER */
-.game-header {
+.level-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
 }
 
-.moves {
-  font-weight: 600;
-  font-size: 0.95rem;
+.level-header h1 {
+  font-size: 2.5rem;
+  color: #facc15;
+  text-shadow: 0 6px 20px rgba(0,0,0,0.45);
 }
 
-/* BUTTONS */
-#resetBtn,
-#restartBtn {
-  background: var(--primary);
-  color: var(--text-light);
-  border: none;
-  border-radius: 999px;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+.game-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 1rem;
 }
 
-#resetBtn:hover,
-#restartBtn:hover {
-  background: var(--secondary);
-  transform: translateY(-1px) scale(1.03);
-}
-
-#resetBtn:active,
-#restartBtn:active {
-  transform: scale(0.95);
-}
-
-/* GAME BOARD */
-#gameBoard {
-  display: grid;
-  justify-content: center;
-  perspective: 1000px;
-}
-
-/* CARD */
-.card-box {
+.levels-container {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  height: auto;
-  cursor: pointer;
-  perspective: 900px;
+  max-width: 420px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(6px);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border-radius: 1rem;
 }
 
+.levels-container h2 {
+  font-size: 1.6rem;
+  color: #e0f2fe;
+  margin-bottom: 1.5rem;
+}
+
+/* Levels list */
+.levels-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+/* Level button */
+.levels-list button {
+  height: 72px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: linear-gradient(180deg, #38bdf8, #2563eb);
+  color: #f8fafc;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border-radius: 1rem;
+}
+
+/* Hover / tap */
+.levels-list button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.45);
+}
+
+.levels-list button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+}
+
+/* Locked */
+.levels-list button:disabled {
+  background: linear-gradient(180deg, #475569, #334155);
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ===============================
+   MEMORY GAME BOARD
+   =============================== */
+
+.game-header {
+  width: 100%;
+  max-width: 480px; /* Match the container width */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark background */
+  border-radius: 10px;
+  margin: 0 auto; /* Center the header */
+}
+
+.game-header h2 {
+  font-size: 1.6rem;
+  color: #facc15;
+}
+
+.game-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.game-right {
+  font-size: 1.2rem;
+  color: #e0f2fe;
+}
+
+/* Game Board */
+.game-board {
+  width: 100%;
+  max-width: 480px;
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  background-color: rgba(15, 23, 42, 0.6); /* Dark background for cards */
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  border-radius: 10px;
+  grid-template-columns: repeat(4, 1fr); /* Default 4 columns */
+  grid-template-rows: repeat(2, 1fr); /* Default 2 rows */
+  justify-items: center; /* Center cards inside the grid cells */
+  margin-top: 40px;
+}
+
+/* Card structure */
+.card {
+  width: 100%;
+  aspect-ratio: 1 / 1;  /* Ensures cards maintain square shape */
+  position: relative;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease; /* Smooth flip animation */
+  overflow: hidden;  /* Ensures content stays inside */
+  border-radius: 1rem;
+}
+
+/* Card inner wrapper (holds both front and back) */
 .card-inner {
   width: 100%;
   height: 100%;
+  /* position: absolute; */
   position: relative;
   transform-style: preserve-3d;
-  transition: transform var(--transition-normal);
+  transition: transform 0.5s ease;
+  background: linear-gradient(180deg, #2563eb, #1e40af);
 }
 
-.card-box.flipped .card-inner {
-  transform: rotateY(180deg) scale(1.03);
+/* Flip the card when it's flipped */
+.card.flipped .card-inner {
+  transform: rotateY(180deg);  /* Flips the card */
 }
 
-/* CARD FACES */
+/* Card front (icon/fruit shown) */
 .card-front,
 .card-back {
   position: absolute;
-  inset: 0;
-  border-radius: var(--radius);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(1.4rem, 4vw, 2rem);
-  backface-visibility: hidden;
-  box-shadow: var(--shadow-soft);
-  user-select: none;
-}
-
-/* FRONT */
-.card-front {
-  background: linear-gradient(145deg, #6c5ce7, #a29bfe);
-  color: var(--text-light);
+  backface-visibility: hidden; /* Ensures the back doesn't show when flipped */
+  font-size: 2rem;
   font-weight: 700;
 }
 
-/* BACK */
+/* Back of the card (hidden when flipped) */
+.card-front {
+  background: linear-gradient(180deg, #facc15, #f59e0b);  /* Example color */
+  color: white;
+  transform: rotateY(180deg);  /* Back face rotated 180deg */
+  font-size: 3.5rem;
+}
+
+/* Front of the card (revealed when flipped) */
 .card-back {
-  background: var(--bg-card);
-  transform: rotateY(180deg);
+  background: linear-gradient(180deg, #2563eb, #1e40af);  /* Example color */
+  color: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-/* MATCHED */
-.card-box.matched .card-inner {
-  transform: rotateY(180deg) scale(1.05);
+.card-logo{
+  width: 75%;
+  height: auto;
+  max-width: 80px;
+  object-fit: contain;
+  border-radius: 1rem;
 }
 
-.card-box.matched .card-back {
-  background: linear-gradient(
-    135deg,
-    var(--success),
-    #55efc4
-  );
-  color: var(--text-light);
-  animation: pulse 0.8s ease-in-out;
+.back-btn {
+  background: #111827;
+  color: #f8fafc;
+  border: 2px solid rgba(255,255,255,0.2);
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+  border-radius: 8px;
 }
 
-/* WRONG ANIMATION */
-.card-box.wrong {
-  animation: shake 0.4s ease-in-out;
+.back-btn:hover {
+  background: rgba(255,255,255,0.1);
 }
 
-/* LEVEL COMPLETE MODAL */
-.modal-overlay {
+/* Level Complete Modal */
+.modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  display: none;
-  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
-  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .modal-content {
@@ -236,74 +381,77 @@ body {
   width: 100%;
   max-width: 320px;
   padding: 1.5rem 1.25rem;
-  border-radius: var(--radius);
   text-align: center;
-  box-shadow: var(--shadow-soft);
-  animation: popIn 0.4s ease;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content h2 {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   margin-bottom: 0.5rem;
-  color: var(--primary);
+  color: #facc15; /* Winning color */
 }
 
 .modal-content p {
-  font-size: 0.95rem;
+  font-size: 1rem;
   margin-bottom: 1rem;
 }
 
 .modal-content button {
-  background: linear-gradient(
-    135deg,
-    var(--primary),
-    var(--secondary)
-  );
+  background: linear-gradient(135deg, #38bdf8, #2563eb);
+  color: #fff;
   border: none;
-  border-radius: 999px;
-  padding: 0.5rem 1.25rem;
-  color: var(--text-light);
-  font-size: 0.9rem;
-  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  border-radius: 8px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .modal-content button:hover {
   transform: scale(1.05);
-  filter: brightness(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* ANIMATIONS */
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-3px); }
-  100% { transform: translateX(0); }
+
+
+/* ===============================
+   ANIMATIONS
+   =============================== */
+@keyframes pixelDrift {
+  from { background-position: 0 0; }
+  to { background-position: 240px 240px; }
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1.05); }
+@keyframes spinPulse {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.12); }
+  100% { transform: rotate(360deg) scale(1); }
 }
 
-@keyframes popIn {
-  0% { transform: scale(0.7); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.5)); }
+  50% { transform: translateY(-12px); filter: drop-shadow(0 0 30px rgba(250, 204, 21, 0.8)); }
 }
 
-/* RESPONSIVE */
+/* ===============================
+   RESPONSIVE
+   =============================== */
+@media (max-width: 600px) {
+  .game-board {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for medium screens */
+  }
+}
+
 @media (max-width: 380px) {
-  .container { padding: 1rem 0.75rem 1.25rem; }
-  .logo-wrapper h1 { font-size: 1.4rem; }
-  .card-front, .card-back { font-size: 1.3rem; }
+  .game-board {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on very small screens */
+  }
 }
 
-@media (min-width: 600px) {
-  .container { max-width: 560px; padding: 1.5rem 1.5rem 1.75rem; }
-  .logo-wrapper h1 { font-size: 2rem; }
-  .moves { font-size: 1rem; }
-  #resetBtn, #restartBtn { font-size: 0.9rem; padding: 0.45rem 1rem; }
+@media (max-width: 480px) {
+  h1 { font-size: 1.6rem; }
+  p { font-size: 0.9rem; }
+  .logo { width: 50px; height: 50px; }
+  .spinner { width: 36px; height: 36px; border-width: 4px; }
 }

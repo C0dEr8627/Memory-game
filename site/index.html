@@ -1,54 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Memory Card Game</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flipzy-Memory Card Game</title>
 
-  <!-- Bootstrap only for modal button styles -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="../assets/logo.png" type="image/x-icon">
 </head>
 <body>
-
-<div class="container">
-  <div class="logo-wrapper">
-    <img src="logo.png" alt="Flipzy logo">
-    <h1>Flipzy</h1>
-  </div>
-  <!-- Progress bar (always visible) -->
-  <div class="progress-wrapper">
-    <div class="progress custom-progress">
-      <div id="progressBar" class="progress-bar custom-progress-bar"></div>
+  <!-- Loading Screen -->
+  <section id="loadingScreen" class="screen active loading-screen">
+    <div class="logo-wrapper">
+      <img src="../assets/logo.png" alt="Flipzy logo" class="logo" />
+      <h1>Flipzy</h1>
+      <p>Memory Card Game</p>
+      <div class="spinner"></div>
     </div>
-  </div>
+  </section>
 
-  <!-- Board + header aligned together -->
-  <div class="board-wrapper">
+
+  <!-- Level Selection Screen -->
+  <section id="levelSelectionScreen" class="screen level-screen hidden">
+
+    <!-- Header -->
+    <div class="level-header">
+      <img src="../assets/logo.png" alt="Flipzy Logo" class="game-logo">
+      <h1>Flipzy</h1>
+    </div>
+
+    <!-- Levels Container -->
+    <div class="levels-container">
+      <h2>Select Level</h2>
+      <div id="levelButtons" class="levels-list"></div>
+    </div>
+
+  </section>
+
+  <!-- Game Screen -->
+  <section id="gameScreen" class="screen">
+    <!-- Game Header -->
     <div class="game-header">
-      <div class="moves">Moves: <span id="moves">0</span></div>
-      <button id="resetBtn">Reset</button>
-      <button id="restartBtn">Restart</button>
+      <div class="game-left">
+        <img src="../assets/logo.png" class="game-logo" alt="Flipzy Logo" />
+        <h2>Flipzy</h2>
+      </div>
+
+      <div class="game-right">
+        <span>Moves:</span>
+        <strong id="moveCount">0</strong>
+      </div>
     </div>
-    <div id="gameBoard"></div>
-  </div>
-</div>
 
-<!-- Level complete modal -->
-<div id="levelModal" class="modal-overlay">
-  <div class="modal-content">
-    <h2>🎉 Level Complete!</h2>
-    <p id="modalMessage"></p>
-    <button id="nextLevelBtn" class="btn btn-success mt-3">
-      Next Level
-    </button>
-  </div>
-</div>
+    <!-- Game Board -->
+    <div class="game-board" id="gameBoard">
+      <!-- Cards will be dynamically created here -->
+    </div>
 
-<script src="script.js"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script> -->
+    <!-- Back to Level Selection -->
+    <button id="backToLevels" class="back-btn">← Back to Levels</button>
+  </section>
+
+  <!-- Level Complete Modal -->
+  <div id="levelCompleteModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>🎉 Level Complete!</h2>
+      <p id="levelCompleteMessage">You completed Level 1!</p>
+      <button id="nextLevelBtn">Next Level</button>
+    </div>
+  </div>
+
+
+  <!-- JS -->
+  <script src="script.js"></script>
 </body>
 </html>
